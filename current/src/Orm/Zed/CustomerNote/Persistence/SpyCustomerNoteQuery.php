@@ -1,0 +1,20 @@
+<?php
+
+namespace Orm\Zed\CustomerNote\Persistence;
+
+use Orm\Zed\CustomerNote\Persistence\Base\SpyCustomerNoteQuery as BaseSpyCustomerNoteQuery;
+
+/**
+ * Skeleton subclass for performing query and update operations on the 'spy_customer_note' table.
+ *
+ *
+ *
+ * You should add additional methods to this class to meet the
+ * application requirements.  This class will only be generated as
+ * long as it does not already exist in the output directory.
+ *
+ */
+class SpyCustomerNoteQuery extends BaseSpyCustomerNoteQuery
+{
+
+}

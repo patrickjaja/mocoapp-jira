@@ -1,0 +1,74 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'customer-navigation',
+    tag: 'nav'
+} %}
+
+{% define data = {
+    activePage: required,
+    activeEntityId: null
+} %}
+
+{%- macro isActive(page, activePage) -%}
+    {%- if page == activePage -%}menu__link--active{%- endif -%}
+{%- endmacro -%}
+
+{%- import _self as macros -%}
+
+{% block body %}
+    <ul class="menu">
+        <li class="menu__item">
+            <a href="{{ path('customer/overview') }}"
+               class="{{macros.isActive('overview', data.activePage)}}"
+               data-id="sidebar-overview">{{ 'customer.account.overview' | trans }}</a>
+        </li>
+        <li class="menu__item">
+            <a href="{{ path('customer/profile') }}"
+               class="{{macros.isActive('profile', data.activePage)}}"
+               data-id="sidebar-profile">{{ 'customer.account.profile_data' | trans }}</a>
+        </li>
+        <li class="menu__item {{macros.isActive('address', data.activePage)}}">
+            <a href="{{ path('customer/address') }}"
+               class="{{macros.isActive('address', data.activePage)}}"
+               data-id="sidebar-address">{{ 'customer.account.address' | trans }}</a>
+        </li>
+        <li class="menu__item {{macros.isActive('order', data.activePage)}}">
+            <a href="{{ path('customer/order') }}"
+               class="{{macros.isActive('order', data.activePage)}}"
+               data-id="sidebar-order">{{ 'customer.account.order_history' | trans }}</a>
+        </li>
+        <li class="menu__item {{macros.isActive('newsletter', data.activePage)}}">
+            <a href="{{ path('customer/newsletter') }}"
+               class="{{macros.isActive('newsletter', data.activePage)}}"
+               data-id="sidebar-newsletter">{{ 'customer.account.newsletter' | trans }}</a>
+        </li>
+        {% widget 'WishlistMenuItemWidget' args [data.activePage, data.activeEntityId] only %}
+        {% elsewidget 'WishlistMenuItemWidgetPlugin' args [data.activePage, data.activeEntityId] only %} {# @deprecated Use WishlistMenuItemWidget instead. #}
+        {% endwidget %}
+
+        {% widget 'ShoppingListMenuItemWidget' args [data.activePage, data.activeEntityId] only %}
+        {% elsewidget 'ShoppingListMenuItemWidgetPlugin' args [data.activePage, data.activeEntityId] only %} {# @deprecated Use ShoppingListMenuItemWidget instead. #}
+        {% endwidget %}
+
+        {% widget 'MultiCartMenuItemWidget' args [data.activePage] only %}
+        {% elsewidget 'MultiCartMenuItemWidgetPlugin' args [data.activePage] only %} {# @deprecated Use MultiCartMenuItemWidget instead. #}
+        {% endwidget %}
+
+        {% widget 'BusinessOnBehalfStatusWidget' use view('change-company-user', 'BusinessOnBehalfWidget') with {
+            activePage: macros.isActive('menuItemBusinessOnBehalfWidget', data.activePage)
+        } only %}
+            {% block body %}
+                <li class="menu__item menu__item--has-children-list {{ activePage }}">
+                    {{ parent() }}
+                </li>
+            {% endblock %}
+        {% elsewidget 'MenuItemBusinessOnBehalfWidgetPlugin' with {activePage: macros.isActive('menuItemBusinessOnBehalfWidget', data.activePage)} only %} {# @deprecated Use BusinessOnBehalfStatusWidget instead. #}
+            {% block body %}
+                <li class="menu__item menu__item--has-children-list {{ activePage }}">
+                    {{ parent() }}
+                </li>
+            {% endblock %}
+        {% endwidget %}
+    </ul>
+{% endblock %}

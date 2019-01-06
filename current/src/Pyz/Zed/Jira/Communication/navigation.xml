@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <jira>
+        <label>Jira</label>
+        <title>Jira</title>
+        <bundle>jira</bundle>
+        <controller>index</controller>
+        <action>index</action>
+    </jira>
+</config>

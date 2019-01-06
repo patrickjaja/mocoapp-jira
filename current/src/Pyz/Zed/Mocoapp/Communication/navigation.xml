@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <mocoapp>
+        <label>Mocoapp</label>
+        <title>Mocoapp</title>
+        <bundle>mocoapp</bundle>
+        <controller>index</controller>
+        <action>index</action>
+    </mocoapp>
+</config>

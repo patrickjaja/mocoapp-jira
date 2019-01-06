@@ -1,0 +1,144 @@
+env:
+    APPLICATION_ENV: devtest
+
+sections:
+
+    generate:
+        generate-transfers:
+            command: "vendor/bin/console transfer:generate"
+
+        generate-transfer-databuilders:
+            command: "vendor/bin/console transfer:databuilder:generate"
+
+        generate-ide-auto-completion:
+            command: "vendor/bin/console dev:ide:generate-auto-completion"
+
+
+    cache:
+        twig-cache-warmup:
+            command: "vendor/bin/console twig:cache:warmer"
+
+        navigation-cache-warmup:
+            command: "vendor/bin/console navigation:build-cache"
+
+        rest-request-validation-cache-warmup:
+            command: "vendor/bin/console glue:rest:build-request-validation-cache"
+
+    queue-flush:
+        set-permissions:
+            command: "vendor/bin/console queue:permission:set"
+            stores: true
+
+        purge-all-queues:
+            command: "vendor/bin/console queue:queue:purge-all"
+            stores: true
+
+        delete-all-queues:
+            command: "vendor/bin/console queue:queue:delete-all"
+            stores: true
+
+        delete-all-exchanges:
+            command: "vendor/bin/console queue:exchanges:delete-all"
+            stores: true
+
+
+    database-flush:
+        drop-database:
+            command: "vendor/bin/console propel:database:drop"
+        delete-migration-files:
+            command: "vendor/bin/console propel:migration:delete"
+
+
+    database-migrate:
+        propel-config:
+            command: "vendor/bin/console propel:config:convert"
+
+        propel-create:
+            command: "vendor/bin/console propel:database:create"
+
+        propel-postgres-compatibility:
+            command: "vendor/bin/console propel:pg-sql-compat"
+
+        propel-postgres-index-remover:
+            command: "vendor/bin/console propel:postgres-indexes:remove"
+
+        propel-copy-schema:
+            command: "vendor/bin/console propel:schema:copy"
+
+        propel-postgres-index-generator:
+            command: "vendor/bin/console propel:postgres-indexes:generate"
+
+        propel-copy-and-merge-with-generated-indices:
+            command: "vendor/bin/console propel:schema:copy"
+
+        propel-build:
+            command: "vendor/bin/console propel:model:build"
+
+        propel-diff:
+            command: "vendor/bin/console propel:diff"
+
+        propel-migrate:
+            command: "vendor/bin/console propel:migrate"
+
+        generate-entity-transfer:
+            command: "vendor/bin/console transfer:generate"
+
+
+        init-database:
+            command: "vendor/bin/console setup:init-db"
+
+        setup-search:
+            command: "vendor/bin/console setup:search"
+
+
+    setup-test:
+        codeception-build:
+            command: "vendor/bin/codecept build --ansi"
+
+        databuilder-generate:
+            command: "vendor/bin/console transfer:databuilder:generate"
+
+
+    demodata:
+        import:
+            command: "vendor/bin/console data:import"
+
+        update-product-labels:
+            command: "vendor/bin/console product-label:relations:update"
+
+    backup:
+        backup-database:
+            command: "vendor/bin/console propel:database:export data/db.backup"
+
+    queue:
+        run-worker:
+            command: "vendor/bin/console queue:worker:start"
+
+
+    restore:
+        excluded: true
+        drop-database:
+            command: "vendor/bin/console propel:database:drop"
+
+        create-database:
+            command: "vendor/bin/console propel:database:create"
+
+        restore-database:
+            command: "vendor/bin/console propel:database:import data/db.backup"
+
+
+    frontend:
+        dependencies-install:
+            command: "vendor/bin/console frontend:project:install-dependencies"
+
+        yves-install-dependencies:
+            command: "vendor/bin/console frontend:yves:install-dependencies"
+
+        yves-build-frontend:
+            command: "vendor/bin/console frontend:yves:build"
+
+        zed-install-dependencies:
+            command: "vendor/bin/console frontend:zed:install-dependencies"
+
+        zed-build-frontend:
+            command: "vendor/bin/console frontend:zed:build"
