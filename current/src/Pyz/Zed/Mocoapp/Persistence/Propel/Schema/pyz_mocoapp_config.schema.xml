@@ -16,4 +16,11 @@
         <id-method-parameter value="id_pyz_mocoapp_config_pk_seq"/>
     </table>
 
+    <table name="pyz_mocoapp_project_mapping" idMethod="native" phpName="PyzMocoappProjectMapping">
+        <column name="id_pyz_mocoapp_project_mapping" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="mocoapp_id_project" type="INTEGER"/>
+        <column name="project_identifier" type="VARCHAR"/>
+        <id-method-parameter value="id_pyz_mocoapp_project_mapping_pk_seq"/>
+    </table>
+
 </database>

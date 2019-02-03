@@ -1,0 +1,17 @@
+POST http://glue.de.suite.local/access-tokens
+Accept: */*
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "data": {
+    "type": "access-tokens",
+    "attributes": {
+      "username": "admin@spryker.com",
+      "password": "change123"
+    }
+  }
+}
+
+###
+

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="JiraConnection">
+        <property name="jiraHost" type="string"/>
+        <property name="jiraUser" type="string"/>
+        <property name="jiraPassword" type="string"/>
+    </transfer>
+
+    <transfer name="JiraResponse">
+        <property name="jql" type="string"/>
+        <property name="lastImport" type="string"/>
+        <property name="jiraTicketComments" type="JiraTicketComment[]"/>
+    </transfer>
+
+    <transfer name="JiraTicketComment">
+        <property name="self" type="string"/>
+        <property name="id" type="string"/>
+        <property name="author" type="JiraAuthor"/>
+        <property name="body" type="string"/>
+        <property name="updateAuthor" type="JiraAuthor"/>
+        <property name="created" type="string"/>
+        <property name="updated" type="string"/>
+        <property name="jsdPublic" type="bool"/>
+        <property name="issueKey" type="string"/>
+    </transfer>
+
+    <transfer name="JiraAuthor">
+        <property name="self" type="string"/>
+        <property name="name" type="string"/>
+        <property name="key" type="string"/>
+        <property name="accountId" type="string"/>
+        <property name="emailAddress" type="string"/>
+        <property name="avatarUrls" type="JiraAuthorAvatarUrls"/>
+        <property name="displayName" type="string"/>
+        <property name="active" type="string"/>
+        <property name="timeZone" type="string"/>
+    </transfer>
+
+    <transfer name="JiraAuthorAvatarUrls">
+        <property name="x48" type="string"/>
+        <property name="x24" type="string"/>
+        <property name="x16" type="string"/>
+        <property name="x32" type="string"/>
+    </transfer>
+</transfers>

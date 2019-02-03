@@ -11,6 +11,7 @@ use JiraRestApi\Issue\IssueService;
 
 class Jira
 {
+    private const MAX_RESULTS = 1000;
     /**
      * @var \JiraRestApi\Issue\IssueService
      */
@@ -33,7 +34,7 @@ class Jira
      */
     public function getTickets(JiraResponseTransfer $jiraResponseTransfer): JiraResponseTransfer
     {
-        $issues = $this->jiraClient->search($jiraResponseTransfer->getJql());
+        $issues = $this->jiraClient->search($jiraResponseTransfer->getJql(), 0, self::MAX_RESULTS);
         $ticketList = [];
         foreach ($issues->getIssues() as $searchResult) {
             $ticketList[] = $searchResult->key;
@@ -42,7 +43,10 @@ class Jira
         foreach ($ticketList as $issueKey) {
             $comments = $this->jiraClient->getComments($issueKey);
             foreach ($comments->comments as $comment) {
-                if ($jiraResponseTransfer->getLastImport() < $comment->created && $comment->author->emailAddress === $this->jiraClient->getConfiguration()->getJiraUser()) {
+                $latsImport = date('Y-m-d H:i', strtotime($jiraResponseTransfer->getLastImport()));
+                $ticketCreated = date('Y-m-d H:i', strtotime($comment->created));
+                if ($latsImport < $ticketCreated
+                    && $comment->author->emailAddress === $this->jiraClient->getConfiguration()->getJiraUser()) {
                     $comment->issueKey = $issueKey;
                     $jiraResponseTransfer->addJiraTicketComments(
                         (new JiraTicketCommentTransfer())->fromArray(get_object_vars($comment), true)

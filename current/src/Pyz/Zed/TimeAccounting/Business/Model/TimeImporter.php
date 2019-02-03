@@ -57,10 +57,13 @@ class TimeImporter
         $lastImport = $this->accountingRepository->getLastImport($customerTransfer);
         $jiraConfig = $this->jiraFacade->getJiraCustomerConfig($customerTransfer);
         $jiraResponse = new JiraResponseTransfer();
-        $jiraResponse->setLastImport($lastImport->getLastImport());
-        $jiraResponse->setJql(sprintf(self::JIRA_QUERY, date('Y-m-d H:i', strtotime($lastImport->getLastImport()))));
+        $jiraResponse->setLastImport("2019-02-01 01:01");
+//        $jiraResponse->setLastImport($lastImport->getLastImport());
+        $jiraResponse->setJql('(summary ~ currentUser() OR description ~ currentUser() OR assignee = currentUser() OR worklogAuthor = currentUser() OR comment ~ currentUser() OR watcher = currentUser() OR text ~ currentUser() OR creator = currentUser() OR voter = currentUser()) AND updatedDate >= "2019-02-01 01:01" ORDER BY updated DESC');
+//        $jiraResponse->setJql(sprintf(self::JIRA_QUERY, date('Y-m-d H:i', strtotime($lastImport->getLastImport()))));
         $jiraTicketResponse = $this->jiraFacade->getTickets($jiraConfig, $jiraResponse);
-        $jiraTicketResponse->setLastImport($lastImport->getLastImport());
+        $jiraTicketResponse->setLastImport("2019-02-01 01:01");
+//        $jiraTicketResponse->setLastImport($lastImport->getLastImport());
 
         $mocoConfig = $this->mocoappFacade->getMocoappCustomerConfig($customerTransfer);
         $timeCollectionTransfer = new MocoappTimeEntryCollectionTransfer();
@@ -70,9 +73,8 @@ class TimeImporter
             $timeEntry->setComponentIdentifier($jiraTicket->getIssueKey());
             $timeEntry->setDate(date('Y-m-d', strtotime($jiraTicket->getCreated())));
             $timeEntry->setDescription($jiraTicket->getIssueKey() . ': ' . $this->character_limiter($jiraTicket->getBody(), 200));
-            //ToDo: Map JIRA Project to Mocoproject for date range
             $timeEntry->setHours(0.5);
-            $timeEntry->setProjectId(944878464);
+            $timeEntry->setProjectId($jiraTicket->getIssueKey());
             $timeCollectionTransfer->addMocoappTimeEntries($timeEntry);
         }
         $this->mocoappFacade->sendTimeEntries($mocoConfig, $timeCollectionTransfer);

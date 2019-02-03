@@ -6,6 +6,7 @@ namespace Pyz\Zed\Mocoapp\Business\Model;
 use Generated\Shared\Transfer\MocoappConnectionTransfer;
 use Generated\Shared\Transfer\MocoappTimeEntryCollectionTransfer;
 use GuzzleHttp\Client;
+use Orm\Zed\Mocoapp\Persistence\PyzMocoappProjectMappingQuery;
 
 class Mocoapp
 {
@@ -43,25 +44,31 @@ class Mocoapp
      */
     public function sendTimeEntries(MocoappTimeEntryCollectionTransfer $timeEntryCollectionTransfer): void
     {
+        //ToDo: Move to Repository
+        $projectMapping = $this->getMocoappProjectMapping();
         foreach ($timeEntryCollectionTransfer->getMocoappTimeEntries() as $timeEntry) {
-            $data = [
-                'date' => $timeEntry->getDate(),
-                'description' => $timeEntry->getDescription(),
-                'project_id' => $timeEntry->getProjectId(),
-                'task_id' => $this->getComponentsToProject($timeEntry->getProjectId(), $timeEntry->getComponentIdentifier()),
-                'hours' => $timeEntry->getHours(),
-            ];
-            $res = $this->client->request('POST', $this->mocoappConnectionTransfer->getMocoappHost() . "/api/v1/activities", [
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Content-type' => 'application/json',
-                    'Authorization' => 'Token token=' . $this->mocoappConnectionTransfer->getMocoappToken(),
-                ],
-                'body' => json_encode($data),
-            ]);
+            $projectKey = explode('-', $timeEntry->getProjectId())[0];
+            if (isset($projectMapping[$projectKey])) {
+                $projectId = $projectMapping[$projectKey];
+                $data = [
+                    'date' => $timeEntry->getDate(),
+                    'description' => $timeEntry->getDescription(),
+                    'project_id' => $projectId,
+                    'task_id' => $this->getComponentIdToProject($projectId, $timeEntry->getComponentIdentifier()),
+                    'hours' => $timeEntry->getHours(),
+                ];
+                $res = $this->client->request('POST', $this->mocoappConnectionTransfer->getMocoappHost() . "/api/v1/activities", [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Content-type' => 'application/json',
+                        'Authorization' => 'Token token=' . $this->mocoappConnectionTransfer->getMocoappToken(),
+                    ],
+                    'body' => json_encode($data),
+                ]);
 
-            //ToDo: Check Mocoresponse
-            $content = $res->getBody()->getContents();
+                //ToDo: Check Mocoresponse
+                $content = $res->getBody()->getContents();
+            }
         }
     }
 
@@ -71,7 +78,7 @@ class Mocoapp
      *
      * @return int
      */
-    private function getComponentsToProject(int $projectId, string $componentIdentifier): int
+    private function getComponentIdToProject(int $projectId, string $componentIdentifier): int
     {
         $components = $this->loadMococomponentsToProject($projectId);
 
@@ -108,7 +115,7 @@ class Mocoapp
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-type' => 'application/json',
-                'Authorization' => "Token token=" . $this->mocoappConnectionTransfer->getMocoappToken(),
+                'Authorization' => 'Token token=' . $this->mocoappConnectionTransfer->getMocoappToken(),
             ],
         ]);
 
@@ -119,5 +126,17 @@ class Mocoapp
             $content = $this->mocoComponents[$projectId];
         }
         return $content;
+    }
+
+    /**
+     * @return array
+     */
+    private function getMocoappProjectMapping(): array
+    {
+        $projectMap = [];
+        foreach (PyzMocoappProjectMappingQuery::create()->find() as $projectMapping) {
+            $projectMap[$projectMapping->getProjectIdentifier()] = $projectMapping->getMocoappIdProject();
+        }
+        return $projectMap;
     }
 }
