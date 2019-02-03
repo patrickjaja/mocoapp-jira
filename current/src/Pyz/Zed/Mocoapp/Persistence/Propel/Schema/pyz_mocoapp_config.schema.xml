@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\Mocoapp\Persistence"
+          package="src.Orm.Zed.Mocoapp.Persistence">
+
+    <table name="pyz_mocoapp_config" idMethod="native" phpName="PyzMocoappConfig">
+        <column name="id_pyz_mocoapp_config" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="mocoapp_host" type="VARCHAR"/>
+        <column name="mocoapp_token" type="VARCHAR"/>
+        <column name="fk_customer" type="INTEGER"/>
+        <foreign-key name="pyz_mocoapp_config-fk_customer" foreignTable="spy_customer">
+            <reference foreign="id_customer" local="fk_customer"/>
+        </foreign-key>
+        <id-method-parameter value="id_pyz_mocoapp_config_pk_seq"/>
+    </table>
+
+</database>

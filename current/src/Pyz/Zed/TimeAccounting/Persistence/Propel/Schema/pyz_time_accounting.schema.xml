@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\TimeAccounting\Persistence"
+          package="src.Orm.Zed.TimeAccounting.Persistence">
+
+    <table name="pyz_last_import" idMethod="native" phpName="PyzLastImport">
+        <column name="id_last_import" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="last_import" type="TIMESTAMP" defaultExpr="CURRENT_TIMESTAMP"/>
+        <column name="fk_customer" type="INTEGER"/>
+        <foreign-key name="pyz_last_import-fk_customer" foreignTable="spy_customer">
+            <reference foreign="id_customer" local="fk_customer"/>
+        </foreign-key>
+        <id-method-parameter value="pyz_id_last_import_pk_seq"/>
+    </table>
+
+</database>

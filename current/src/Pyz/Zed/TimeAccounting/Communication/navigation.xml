@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <time-accounting>
+        <label>Time Accounting</label>
+        <title>Time Accounting</title>
+        <bundle>time-accounting</bundle>
+        <controller>index</controller>
+        <action>index</action>
+    </time-accounting>
+</config>
