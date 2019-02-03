@@ -14,7 +14,7 @@ use Pyz\Zed\TimeAccounting\Persistence\TimeAccountingRepositoryInterface;
 
 class TimeImporter
 {
-    private const JIRA_QUERY = 'project = LL and updatedDate >= "%s" ORDER BY updated DESC';
+    private const JIRA_QUERY = '(summary ~ currentUser() OR description ~ currentUser() OR assignee = currentUser() OR worklogAuthor = currentUser() OR comment ~ currentUser() OR watcher = currentUser() OR text ~ currentUser() OR creator = currentUser() OR voter = currentUser()) AND updatedDate >= "%s" ORDER BY updated DESC';
 
     /**
      * @var \Pyz\Zed\Jira\Business\JiraFacadeInterface
@@ -57,13 +57,10 @@ class TimeImporter
         $lastImport = $this->accountingRepository->getLastImport($customerTransfer);
         $jiraConfig = $this->jiraFacade->getJiraCustomerConfig($customerTransfer);
         $jiraResponse = new JiraResponseTransfer();
-        $jiraResponse->setLastImport("2019-02-01 01:01");
-//        $jiraResponse->setLastImport($lastImport->getLastImport());
-        $jiraResponse->setJql('(summary ~ currentUser() OR description ~ currentUser() OR assignee = currentUser() OR worklogAuthor = currentUser() OR comment ~ currentUser() OR watcher = currentUser() OR text ~ currentUser() OR creator = currentUser() OR voter = currentUser()) AND updatedDate >= "2019-02-01 01:01" ORDER BY updated DESC');
-//        $jiraResponse->setJql(sprintf(self::JIRA_QUERY, date('Y-m-d H:i', strtotime($lastImport->getLastImport()))));
+        $jiraResponse->setLastImport($lastImport->getLastImport());
+        $jiraResponse->setJql(sprintf(self::JIRA_QUERY, date('Y-m-d H:i', strtotime($lastImport->getLastImport()))));
         $jiraTicketResponse = $this->jiraFacade->getTickets($jiraConfig, $jiraResponse);
-        $jiraTicketResponse->setLastImport("2019-02-01 01:01");
-//        $jiraTicketResponse->setLastImport($lastImport->getLastImport());
+        $jiraTicketResponse->setLastImport($lastImport->getLastImport());
 
         $mocoConfig = $this->mocoappFacade->getMocoappCustomerConfig($customerTransfer);
         $timeCollectionTransfer = new MocoappTimeEntryCollectionTransfer();
