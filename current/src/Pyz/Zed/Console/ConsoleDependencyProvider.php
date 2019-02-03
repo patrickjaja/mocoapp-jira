@@ -3,7 +3,7 @@
 namespace Pyz\Zed\Console;
 
 use Pyz\Zed\DataImport\DataImportConfig;
-use Pyz\Zed\Jira\Communication\Console\JiraConsole;
+use Pyz\Zed\TimeAccounting\Communication\Console\TimeAccountingConsole;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Spryker\Shared\Config\Environment;
 use Spryker\Zed\Cache\Communication\Console\EmptyAllCachesConsole;
@@ -176,7 +176,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
 
             new CustomerAddressesUuidWriterConsole(),
 
-            new JiraConsole()
+            new TimeAccountingConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

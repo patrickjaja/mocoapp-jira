@@ -4,6 +4,7 @@ namespace Pyz\Yves\ShopApplication;
 
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerSecurityServiceProvider;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerTwigFunctionServiceProvider;
+use Pyz\Yves\HelloSpryker\Plugin\Provider\HelloSprykerControllerProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\RememberMeServiceProvider;
@@ -135,6 +136,7 @@ class YvesBootstrap extends SprykerYvesBootstrap
         return [
             new ErrorPageControllerProvider($isSsl),
             new HomePageControllerProvider($isSsl),
+            new HelloSprykerControllerProvider($isSsl),
         ];
     }
 }
