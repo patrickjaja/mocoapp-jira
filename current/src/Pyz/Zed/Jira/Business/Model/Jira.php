@@ -24,7 +24,7 @@ class Jira
     {
         // Save last import date
         $lastImport="2019-01-03 06:00";
-        $token='a8179427a96ebfc9c1daa3c2e7c508e8';
+        $token='xxxxxxxx';
         $fallBackComponent = 'Sprint-Minute';
 
         // get comments performed by user
