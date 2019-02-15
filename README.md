@@ -14,3 +14,10 @@
  max_execution_time=300
  
  export PHP_IDE_CONFIG="serverName=zed"
+ 
+ 
+ apt-get install python-software-properties
+ apt-get install -y software-properties-common
+ add-apt-repository ppa:ondrej/php
+apt-get install -y libxml2-dev
+docker-php-ext-install soap

@@ -3,6 +3,7 @@
 namespace Pyz\Zed\Console;
 
 use Pyz\Zed\DataImport\DataImportConfig;
+use Pyz\Zed\MSExchange\Communication\Console\MSExchangeConsole;
 use Pyz\Zed\TimeAccounting\Communication\Console\TimeAccountingConsole;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Spryker\Shared\Config\Environment;
@@ -177,6 +178,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new CustomerAddressesUuidWriterConsole(),
 
             new TimeAccountingConsole(),
+            new MSExchangeConsole()
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();
