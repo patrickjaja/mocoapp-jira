@@ -11,10 +11,9 @@ $stores = require(APPLICATION_ROOT_DIR . '/config/Shared/stores.php');
 
 $allStores = array_keys($stores);
 
-
 $jobs[] = [
-    'name' => 'queue-worker-start',
-    'command' => '$PHP_BIN vendor/bin/console queue:worker:start',
+    'name' => 'mocoapp-queue-start',
+    'command' => '$PHP_BIN vendor/bin/console q:t:s mocoapp.queue',
     'schedule' => '* * * * *',
     'enable' => true,
     'run_on_non_production' => true,
@@ -23,10 +22,11 @@ $jobs[] = [
 
 
 $jobs[] = [
-  'name' => 'event-trigger-timeout',
-  'command' => '$PHP_BIN vendor/bin/console event:trigger:timeout -vvv',
-  'schedule' => '*/5 * * * *',
-  'enable' => true,
-  'run_on_non_production' => true,
-'stores' => $allStores,
+    'name' => 'timeaccounting-start',
+    'command' => '$PHP_BIN vendor/bin/console timeaccounting:import',
+    'schedule' => '0 * * * *',
+    'enable' => true,
+    'run_on_non_production' => true,
+    'stores' => $allStores,
 ];
+

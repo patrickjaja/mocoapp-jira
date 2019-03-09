@@ -6,6 +6,7 @@ use Generated\Shared\Transfer\MocoappConnectionTransfer;
 use GuzzleHttp\Client;
 use Pyz\Zed\Mocoapp\Business\Model\Mocoapp;
 use Pyz\Zed\Mocoapp\MocoappDependencyProvider;
+use Spryker\Client\Queue\QueueClient;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -22,14 +23,22 @@ class MocoappBusinessFactory extends AbstractBusinessFactory
      */
     public function createMocoapp(MocoappConnectionTransfer $connectionTransfer): Mocoapp
     {
-        return new Mocoapp($this->getCient(), $connectionTransfer);
+        return new Mocoapp($this->getHttpCient(), $connectionTransfer, $this->getQueueCient());
     }
 
     /**
      * @return \GuzzleHttp\Client
      */
-    public function getCient(): Client
+    public function getHttpCient(): Client
     {
         return $this->getProvidedDependency(MocoappDependencyProvider::HTTP_CLIENT);
+    }
+
+    /**
+     * @return \Spryker\Client\Queue\QueueClient
+     */
+    public function getQueueCient(): QueueClient
+    {
+        return $this->getProvidedDependency(MocoappDependencyProvider::QUEUE_CLIENT);
     }
 }

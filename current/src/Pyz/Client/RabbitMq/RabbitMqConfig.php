@@ -4,6 +4,7 @@ namespace Pyz\Client\RabbitMq;
 
 use ArrayObject;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
+use Pyz\Shared\Mocoapp\MocoappConstants;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\RabbitMqConfig as SprykerRabbitMqConfig;
 use Spryker\Shared\CategoryPageSearch\CategoryPageSearchConstants;
@@ -34,6 +35,7 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
         $queueOptionCollection->append($this->createQueueOption(CmsStorageConstants::CMS_SYNC_STORAGE_QUEUE, CmsStorageConstants::CMS_SYNC_STORAGE_ERROR_QUEUE));
         $queueOptionCollection->append($this->createQueueOption(CategoryPageSearchConstants::CATEGORY_SYNC_SEARCH_QUEUE, CategoryPageSearchConstants::CATEGORY_SYNC_SEARCH_ERROR_QUEUE));
         $queueOptionCollection->append($this->createQueueOption(CmsPageSearchConstants::CMS_SYNC_SEARCH_QUEUE, CmsPageSearchConstants::CMS_SYNC_SEARCH_ERROR_QUEUE));
+        $queueOptionCollection->append($this->createQueueOption(MocoappConstants::MOCOAPP_QUEUE, MocoappConstants::MOCOAPP_ERROR_QUEUE));
         $queueOptionCollection->append(
             $this->createQueueOption(
                 $this->get(LogConstants::LOG_QUEUE_NAME),

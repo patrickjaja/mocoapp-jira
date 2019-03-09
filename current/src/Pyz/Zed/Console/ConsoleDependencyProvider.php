@@ -178,7 +178,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new CustomerAddressesUuidWriterConsole(),
 
             new TimeAccountingConsole(),
-            new MSExchangeConsole()
+//            new MSExchangeConsole()
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

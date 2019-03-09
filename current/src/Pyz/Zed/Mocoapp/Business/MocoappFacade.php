@@ -5,6 +5,7 @@ namespace Pyz\Zed\Mocoapp\Business;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\MocoappConnectionTransfer;
 use Generated\Shared\Transfer\MocoappTimeEntryCollectionTransfer;
+use Generated\Shared\Transfer\MocoappTimeEntryTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -27,6 +28,22 @@ class MocoappFacade extends AbstractFacade implements MocoappFacadeInterface
             ->getFactory()
             ->createMocoapp($connectionTransfer)
             ->sendTimeEntries($timeEntryCollectionTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\MocoappConnectionTransfer $connectionTransfer
+     * @param \Generated\Shared\Transfer\MocoappTimeEntryTransfer $timeEntryCollectionTransfer
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function callMoco(
+        MocoappConnectionTransfer $connectionTransfer,
+        MocoappTimeEntryTransfer $timeEntryCollectionTransfer
+    ): void {
+        $this
+            ->getFactory()
+            ->createMocoapp($connectionTransfer)
+            ->callMoco($timeEntryCollectionTransfer);
     }
 
     /**

@@ -15,7 +15,7 @@ use Pyz\Zed\TimeAccounting\Persistence\TimeAccountingRepositoryInterface;
 class TimeImporter
 {
 //    private const JIRA_QUERY = '(summary ~ currentUser() OR description ~ currentUser() OR assignee = currentUser() OR worklogAuthor = currentUser() OR comment ~ currentUser() OR watcher = currentUser() OR text ~ currentUser() OR creator = currentUser() OR voter = currentUser()) AND updatedDate >= "%s" ORDER BY updated DESC';
-    private const JIRA_QUERY = '(project = LL OR project = ESA OR project = GRIM) and updatedDate >= "%s" ORDER BY updated DESC';
+    private const JIRA_QUERY = '(project = LL OR project = ESA) and updatedDate >= "%s" ORDER BY updated DESC';
 
     /**
      * @var \Pyz\Zed\Jira\Business\JiraFacadeInterface
@@ -55,6 +55,7 @@ class TimeImporter
     public function import()
     {
         $customerTransfer = (new CustomerTransfer())->setIdCustomer(1);
+
         $lastImport = $this->accountingRepository->getLastImport($customerTransfer);
         $jiraConfig = $this->jiraFacade->getJiraCustomerConfig($customerTransfer);
         $jiraResponse = new JiraResponseTransfer();
@@ -77,7 +78,6 @@ class TimeImporter
         }
         $this->mocoappFacade->sendTimeEntries($mocoConfig, $timeCollectionTransfer);
 
-        //ToDo: Move to entityMangager
         PyzLastImportQuery::create()
             ->findOneByFkCustomer($customerTransfer->getIdCustomer())
             ->setLastImport(date('Y-m-d H:i'))

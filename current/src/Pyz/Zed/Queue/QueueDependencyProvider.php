@@ -2,6 +2,8 @@
 
 namespace Pyz\Zed\Queue;
 
+use Pyz\Shared\Mocoapp\MocoappConstants;
+use Pyz\Zed\Mocoapp\Communication\Plugin\Queue\MocoappQueueMessageProcessorPlugin;
 use Spryker\Shared\CategoryPageSearch\CategoryPageSearchConstants;
 use Spryker\Shared\CategoryStorage\CategoryStorageConstants;
 use Spryker\Shared\CmsPageSearch\CmsPageSearchConstants;
@@ -40,6 +42,7 @@ class QueueDependencyProvider extends SprykerDependencyProvider
             CategoryStorageConstants::CATEGORY_SYNC_STORAGE_QUEUE => new SynchronizationStorageQueueMessageProcessorPlugin(),
             CmsPageSearchConstants::CMS_SYNC_SEARCH_QUEUE => new SynchronizationSearchQueueMessageProcessorPlugin(),
             CategoryPageSearchConstants::CATEGORY_SYNC_SEARCH_QUEUE => new SynchronizationSearchQueueMessageProcessorPlugin(),
+            MocoappConstants::MOCOAPP_QUEUE => new MocoappQueueMessageProcessorPlugin(),
         ];
     }
 }
